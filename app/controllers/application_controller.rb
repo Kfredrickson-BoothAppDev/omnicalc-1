@@ -25,6 +25,11 @@ def blank_payment_form
 end
 
 def calculate_payment
+  @years = params.fetch("user_years").to_i
+  @apr = params.fetch("user_apr").to_f
+  @principal = params.fetch("user_pv").to_f
+  @payment_value = (((@apr/100/12) * @principal) / ((1-(1+(@apr/100/12))**(-(@years*12)))))
+
   render({ :template => "calculation_templates/payment_results.html.erb"})
 end
 
@@ -33,6 +38,10 @@ def blank_random
 end
 
 def calculate_random
+
+  @lower = params.fetch("user_min").to_f
+  @upper = params.fetch("user_max").to_f
+  @result = rand(@lower..@upper)
   render({ :template => "calculation_templates/random_results.html.erb"})
 end
 
